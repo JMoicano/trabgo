@@ -56,6 +56,8 @@ func RelatorioRevisor(r Revisor) string {
 
 	media := r.notasAtribuidas/float64(r.artigosRevisados)
 
+	//essa conversao recebe o float, o 'f' eu nao sei, o 2 é numero de casas depois 
+	//do ponto, e o ultimo arg é pra dizer se é float 32 ou float 64
 	media_string := strconv.FormatFloat(media, 'f', 2, 64)
 
 	buffer.WriteString(r.nome)
