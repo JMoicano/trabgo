@@ -16,7 +16,9 @@ func main() {
 	revFileName := flag.String("r", "edicao.txt", "Nome do arquivo contendo os dados das revisões")
 	flag.Parse()
 	
-	var temas map[int]String
+	var chefe string
+	var edicao Edicao
+	var temas map[int]string
 	var autores map[int]Autor
 	var revisores map[int]Revisor
 	
@@ -51,7 +53,7 @@ func main() {
 		}
 	}
 	
-		temFile, err := os.Open(*temFileName)
+	temFile, err := os.Open(*temFileName)
 	if err != nil{
 		fmt.Println("Erro de I/O")
 		return
@@ -80,10 +82,27 @@ func main() {
 		revHabilitados := strings.Split(tema[2], ",")
 		for _, v := range revHabilitados{
 			cod,_ := strconv.ParseInt(strings.Trim(v, " "), 10, 0)
-			fmt.Println(cod)
+			revisores[int(cod)].AddTema(tema[1])
 		}
 	}
-	//e := CriarEdicao(1, 2, time.Now())
+	
+	edFile, err := os.Open(*edFileName)
+	edReader := bufio.NewReader(edFile)
+	tema ,_ := edReader.ReadString('\n')
+	chefe,_ = edReader.ReadString('\n')
+	vol,_ = edReader.ReadString('\n')
+	num,_ = edReader.ReadString('\n')
+	dataStr,_ = edReader.ReadString('\n') 
+	dataSplit := strings.Split(dataStr, "/")//TODO: pegar a data a partir do formato da data
+	
+	fmt.Println(rawEdData)
+	
+	if err != nil{
+		fmt.Println("Erro de I/O")
+		return
+	}
+	
+	defer edFile.Close()
 
 	//fmt.Println(e)
 }
