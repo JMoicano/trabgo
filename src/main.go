@@ -5,6 +5,7 @@ import(
 	"fmt"
 	"encoding/csv"
 	"flag"
+	"time"
 	"./revista"
 )
 
@@ -94,6 +95,41 @@ func main() {
 	num,_ = edReader.ReadString('\n')
 	dataStr,_ = edReader.ReadString('\n') 
 	dataSplit := strings.Split(dataStr, "/")//TODO: pegar a data a partir do formato da data
+
+	//http://golang.org/pkg/time/#Parse
+	const dataLayout = "29-Jan-1992"
+	data := dataSplit[2]
+
+	switch dataSplit[1] {
+	case "01":
+		data = data + "Jan"
+	case "02":
+		data = data + "Feb"
+	case "03":
+		data = data + "Mar"
+	case "04":
+		data = data + "Apr"
+	case "05":
+		data = data + "May"
+	case "06":
+		data = data + "Jun"
+	case "07":
+		data = data + "Jul"
+	case "08":
+		data = data + "Aug"
+	case "09":
+		data = data + "Sep"
+	case "10":
+		data = data + "Oct"
+	case "11":
+		data = data + "Nov"
+	case "12":
+		data = data + "Dec"
+	}
+
+	data = data + dataSplit[0]
+
+	t, _ = time.Parse(dataLayout, data)
 	
 	fmt.Println(rawEdData)
 	
