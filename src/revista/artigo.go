@@ -1,9 +1,7 @@
-package artigo
+package revista
 
-import (
-	"fmt"
-	"autor"
-	"revisor"
+import(
+	"sort"
 )
 
 type Artigo struct{
@@ -16,7 +14,7 @@ type Artigo struct{
 }
 
 func CriarArtigo(titulo string, contato *Autor) Artigo{
-	var a Autor
+	var a Artigo
 	a.titulo = titulo
 	a.contato = contato
 	a.AdicionaAutor(contato)
@@ -31,7 +29,7 @@ func (art *Artigo) AdicionaAutor(autor *Autor){
 
 func (art *Artigo) AdicionaRevisao(media float64, revisor *Revisor){
 	art.listaRevisores = append(art.listaRevisores, revisor)
-	revisor.AdicionaRevisao(media)
+	(*revisor) = AdicionaRevisao((*revisor), media)
 	art.media += media
 	art.revisoesEnviadas ++
 	if art.revisoesEnviadas == 3{
@@ -40,13 +38,27 @@ func (art *Artigo) AdicionaRevisao(media float64, revisor *Revisor){
 }
 
 func (art Artigo) GetRevisoesEnviadas() int{
-	return revisoesEnviadas
+	return art.revisoesEnviadas
 }
 
 func (art Artigo) GetMedia() float64{
-	return media
+	return art.media
 }
 
 func (art Artigo) GetTituloArtigo() string{
-	return titulo
+	return art.titulo
+}
+
+type Artigos []Artigo
+
+func (art Artigos) Len() int {
+    return len(art)
+}
+
+func (art Artigos) Less(i, j int) bool {
+    return art[i].media < art[j].media;
+}
+
+func (art Artigos) Swap(i, j int) {
+    art[i], art[j] = art[j], art[i]
 }

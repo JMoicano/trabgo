@@ -1,7 +1,6 @@
-package revisor
+package revista
 
 import (
-	"fmt"
 	"strings"
 	"strconv"
 	"bytes"
@@ -22,7 +21,7 @@ func CriarRevisor(nome string, email string, senha int, instituicao string, ende
 	return (Revisor{nome, email, senha, instituicao, endereco, nil, 0, 0.0})
 }
 
-func ToString(s Revisor) string {
+func GetNome(s Revisor) string {
 	return s.nome
 }
 

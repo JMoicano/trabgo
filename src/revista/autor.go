@@ -1,4 +1,4 @@
-package autor
+package revista
 
 type Autor struct {
 	nome string 
