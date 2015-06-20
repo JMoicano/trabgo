@@ -29,6 +29,7 @@ func (art *Artigo) AdicionaAutor(autor *Autor){
 
 func (art *Artigo) AdicionaRevisao(media float64, revisor *Revisor){
 	art.listaRevisores = append(art.listaRevisores, revisor)
+	//mudei isso, conferir
 	(*revisor) = AdicionaRevisao((*revisor), media)
 	art.media += media
 	art.revisoesEnviadas ++

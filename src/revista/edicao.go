@@ -49,6 +49,8 @@ func RelatorioRevisoes(e Edicao) string {
 		artigos = append(artigos, v)
 	}
 
+	//artigo tem que implementar metodos da interface sort
+	//mas da erro na hora de chamar isso aqui
 	sort.Reverse(artigos)
 
 	for _, j := range artigos {
@@ -58,3 +60,5 @@ func RelatorioRevisoes(e Edicao) string {
 	return revisoes
 
 }
+
+func resumo
