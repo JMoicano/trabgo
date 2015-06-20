@@ -17,30 +17,30 @@ type Revisor struct {
 	notasAtribuidas float64
 }
 
-func CriarRevisor(nome string, email string, senha int, instituicao string, endereco string) Revisor {
+func (rev *Revisor) CriarRevisor(nome string, email string, senha int, instituicao string, endereco string) Revisor {
 	return (Revisor{nome, email, senha, instituicao, endereco, nil, 0, 0.0})
 }
 
-func GetNome(s Revisor) string {
+func (rev *Revisor) GetNome(s Revisor) string {
 	return s.nome
 }
 
-func AddTema(r Revisor, tema string) {
+func (rev *Revisor) AddTema(r Revisor, tema string) {
 	r.temas = append(r.temas, tema)
 }
 
-func AdicionaRevisao(r Revisor, media float64) Revisor{
+func (rev *Revisor) AdicionaRevisao(r Revisor, media float64) Revisor{
 	r.notasAtribuidas = r.notasAtribuidas + media
 	r.artigosRevisados++
 
 	return r
 }
 
-func IsEnvolvido(r Revisor) bool {
+func (rev *Revisor) IsEnvolvido(r Revisor) bool {
 	return r.artigosRevisados > 0
 }
 
-func IsApto(r Revisor, tema string) bool {
+func (rev *Revisor) IsApto(r Revisor, tema string) bool {
 	for _, v := range r.temas {
 		if(strings.EqualFold(tema, v)){
 			return true
@@ -50,7 +50,7 @@ func IsApto(r Revisor, tema string) bool {
 	return false
 }
 
-func RelatorioRevisor(r Revisor) string {
+func (rev *Revisor) RelatorioRevisor(r Revisor) string {
 	var buffer bytes.Buffer
 
 	media := r.notasAtribuidas/float64(r.artigosRevisados)

@@ -8,10 +8,10 @@ type Autor struct {
 	endereco string
 }
 
-func CriarAutor(nome string, email string, senha int, instituicao string, endereco string) Autor {
+func (aut *Autor) CriarAutor(nome string, email string, senha int, instituicao string, endereco string) Autor {
 	return (Autor{nome, email, senha, instituicao, endereco})
 }
 
-func ToString(s Autor) string {
+func (aut *Autor) ToString(s Autor) string {
 	return s.nome
 }

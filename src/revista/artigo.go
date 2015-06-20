@@ -13,7 +13,7 @@ type Artigo struct{
 	revisoesEnviadas int
 }
 
-func CriarArtigo(titulo string, contato *Autor) Artigo{
+func (art *Artigo) CriarArtigo(titulo string, contato *Autor) Artigo{
 	var a Artigo
 	a.titulo = titulo
 	a.contato = contato
