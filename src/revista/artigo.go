@@ -1,9 +1,5 @@
 package revista
 
-import(
-	"sort"
-)
-
 type Artigo struct{
 	titulo string
 	contato *Autor

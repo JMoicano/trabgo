@@ -12,6 +12,6 @@ func (aut *Autor) CriarAutor(nome string, email string, senha int, instituicao s
 	return (Autor{nome, email, senha, instituicao, endereco})
 }
 
-func (aut *Autor) ToString(s Autor) string {
-	return s.nome
+func (aut *Autor) ToString() string {
+	return aut.nome
 }

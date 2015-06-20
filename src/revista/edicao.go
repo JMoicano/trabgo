@@ -21,34 +21,33 @@ func (ed *Edicao) CriarEdicao(numero int, volume int, data time.Time, r Revisor)
 	return (Edicao{volume, numero, data, "", r, "", nil})
 }
 
-func (ed *Edicao) GetTema(e Edicao) string {
-	return e.tema
+func (ed Edicao) GetTema() string {
+	return ed.tema
 }
 
-func (ed *Edicao) SetTema(e Edicao, tema string) Edicao{
-	e.tema = tema
-	return e
+func (ed *Edicao) SetTema(tema string){
+	ed.tema = tema
 }
 
-//nao entendi
-// func SubmeterArtigo(a Artigo, cod int) {
-// }
 
-func (ed *Edicao) SetChefe(e Edicao, r Revisor) Edicao {
-	e.chefe = r
-	return e
+func (ed *Edicao) SubmeterArtigo(a Artigo, cod int) {
+	ed.artigos[cod] = a
 }
 
-func (ed *Edicao) GetArtigo(e Edicao, cod int) Artigo{
-	return e.artigos[cod]
+func (ed *Edicao) SetChefe(r Revisor) {
+	ed.chefe = r
+}
+
+func (ed Edicao) GetArtigo(cod int) Artigo{
+	return ed.artigos[cod]
 }
 
 //http://nerdyworm.com/blog/2013/05/15/sorting-a-slice-of-structs-in-go/
-func (ed *Edicao) RelatorioRevisoes(e Edicao) string {
+func (ed *Edicao) RelatorioRevisoes() string {
 	var revisoes string
 	artigos := []Artigo{}
 
-	for _, v := range e.artigos {
+	for _, v := range ed.artigos {
 		artigos = append(artigos, v)
 	}
 
@@ -64,34 +63,34 @@ func (ed *Edicao) RelatorioRevisoes(e Edicao) string {
 
 }
 
-func (ed *Edicao) resumo(e Edicao, revisores map[int]Revisor) string {
+func (ed *Edicao) resumo(revisores map[int]Revisor) string {
 	var buffer bytes.Buffer
 	var resumo string
 	var revisoresCapacitados int
 	var revisoresEnvolvidos int
 
-	var dateOut string = e.dataPublicacao.Format("ANSIC")
+	var dateOut string = ed.dataPublicacao.Format("ANSIC")
 
 	buffer.WriteString("EngeSort, num. ")
-	buffer.WriteString(strconv.Itoa(e.numero))
+	buffer.WriteString(strconv.Itoa(ed.numero))
 	buffer.WriteString(", volume ")
-	buffer.WriteString(strconv.Itoa(e.volume))
+	buffer.WriteString(strconv.Itoa(ed.volume))
 	buffer.WriteString(" - ")
 	buffer.WriteString(dateOut)
 	buffer.WriteString("\n")
 	buffer.WriteString("Tema: ")
-	buffer.WriteString(e.tema)
+	buffer.WriteString(ed.tema)
 	buffer.WriteString("\n")
 	buffer.WriteString("Editor-chefe: ")
-	buffer.WriteString(e.chefe.GetNome(e.chefe))
+	buffer.WriteString(ed.chefe.GetNome())
 	buffer.WriteString("\n")
 	buffer.WriteString("\n")
 
 	for _, m := range revisores {
 		for _, t := range m.temas {
-			if(strings.EqualFold(e.tema, t)){
+			if(strings.EqualFold(ed.tema, t)){
 				revisoresCapacitados++
-				if(m.IsEnvolvido(m)){
+				if(m.IsEnvolvido()){
 					revisoresEnvolvidos++
 				}
 				break
@@ -101,7 +100,7 @@ func (ed *Edicao) resumo(e Edicao, revisores map[int]Revisor) string {
 
 	var media int
 
-	for _, i := range e.artigos {
+	for _, i := range ed.artigos {
 		media = media + i.GetRevisoesEnviadas()
 	}
 
@@ -109,7 +108,7 @@ func (ed *Edicao) resumo(e Edicao, revisores map[int]Revisor) string {
 
 	buffer.WriteString("\n")
 	buffer.WriteString("Artigos submetidos: ")
-	buffer.WriteString(strconv.Itoa(len(e.artigos)))
+	buffer.WriteString(strconv.Itoa(len(ed.artigos)))
 	buffer.WriteString("\n")
 	buffer.WriteString("Revisores Capacitados: ")
 	buffer.WriteString(strconv.Itoa(revisoresCapacitados))
