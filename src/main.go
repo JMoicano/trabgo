@@ -31,47 +31,45 @@ func readCSVFile(fileName string, fildNumber int)(rawData[][]string, err error){
 	
 	rawData, err = reader.ReadAll()
 	
-	if err != nil{
-		fmt.Println(err)
-		return nil, err
-	}
+	check(err)
 	
 	rawData = rawData[1:]
 	return rawData, nil
 }
 
 func parseData(dataStr string)(time.Time, error){
-	dataSplit := strings.Split(dataStr, "/")//TODO: pegar a data a partir do formato da data
+	dataSplit := strings.Split(dataStr, "/")
 
 	//http://golang.org/pkg/time/#Parse
-	const dataLayout = "29-Jan-1992"
+	const dataLayout = "2006-Jan-02"
+
 	data := dataSplit[2]
 
 	switch dataSplit[1] {
 	case "01":
-		data = data + "Jan"
+		data = data + "-Jan-"
 	case "02":
-		data = data + "Feb"
+		data = data + "-Feb-"
 	case "03":
-		data = data + "Mar"
+		data = data + "-Mar-"
 	case "04":
-		data = data + "Apr"
+		data = data + "-Apr-"
 	case "05":
-		data = data + "May"
+		data = data + "-May-"
 	case "06":
-		data = data + "Jun"
+		data = data + "-Jun-"
 	case "07":
-		data = data + "Jul"
+		data = data + "-Jul-"
 	case "08":
-		data = data + "Aug"
+		data = data + "-Aug-"
 	case "09":
-		data = data + "Sep"
+		data = data + "-Sep-"
 	case "10":
-		data = data + "Oct"
+		data = data + "-Oct-"
 	case "11":
-		data = data + "Nov"
+		data = data + "-Nov-"
 	case "12":
-		data = data + "Dec"
+		data = data + "-Dec-"
 	}
 
 	data = data + dataSplit[0]
@@ -82,7 +80,6 @@ func parseData(dataStr string)(time.Time, error){
 //checa se variável de erro é diferente de nula, pra qualquer ocasião
 func check(e error) {
     if e != nil {
-		fmt.Println("Oi")
         panic(e)
     }
 }
@@ -107,28 +104,6 @@ func relatorioRevisores(revisores []revista.Revisor) string {
 
 	return retorno
 }
-
-/*func relatorioRevisoes(revisoes map[int]*revista.Artigo) string {
-	var retorno string
-
-	for _, c := range revisoes {
-		retorno += c.RelatorioRevisoes()
-		retorno += "\n"
-	}
-
-	return retorno
-}*/
-
-/*func revisoresOrdenados(revisores map[int]revista.Revisor) []revista.Revisor{
-	var ord []revista.Revisor
-	for _, r := range revisores{
-		if r.IsEnvolvido(){
-			ord = append(ord, r)
-		}
-	}
-	sort.Sort(revista.ByName(ord))
-	return ord
-}*/
 
 func main() {
 	edFileName := *flag.String("e", "edicao.txt", "Nome do arquivo contendo os dados da edição")
@@ -182,7 +157,6 @@ func main() {
 	
 	edReader := bufio.NewReader(edFile)
 	tema ,_ := edReader.ReadString('\n')
-	fmt.Println(tema)
 	tema = strings.Trim(tema, "\n")
 	chefe,_ := edReader.ReadString('\n')
 	chefe = strings.Trim(chefe, "\n")
