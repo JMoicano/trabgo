@@ -17,8 +17,8 @@ type Revisor struct {
 	notasAtribuidas float64
 }
 
-func CriarRevisor(nome string, email string, senha int, instituicao string, endereco string) *Revisor {
-	return (&Revisor{nome, email, senha, instituicao, endereco, nil, 0, 0.0})
+func CriarRevisor(nome string, email string, senha int, instituicao string, endereco string) Revisor{
+	return Revisor{nome, email, senha, instituicao, endereco, make([]string, 0), 0, 0.0}
 }
 
 func (rev Revisor) GetNome() string {
@@ -66,7 +66,7 @@ func (rev *Revisor) RelatorioRevisor() string {
 	return buffer.String()
 }
 
-type ByName []*Revisor
+type ByName []Revisor
 
 func (a ByName) Len() int           { return len(a) }
 func (a ByName) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }

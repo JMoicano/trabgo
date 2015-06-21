@@ -93,7 +93,7 @@ func escreverArquivo(nomeArquivo, conteudo string) {
     check(err)
 }
 
-func relatorioRevisores(revisores []*revista.Revisor) string {
+func relatorioRevisores(revisores []revista.Revisor) string {
 	var retorno string
 
 	for _, c := range revisores {
@@ -115,8 +115,8 @@ func relatorioRevisores(revisores []*revista.Revisor) string {
 	return retorno
 }*/
 
-func revisoresOrdenados(revisores map[int]*revista.Revisor) []*revista.Revisor{
-	var ord []*revista.Revisor
+func revisoresOrdenados(revisores map[int]revista.Revisor) []revista.Revisor{
+	var ord []revista.Revisor
 	for _, r := range revisores{
 		if r.IsEnvolvido(){
 			ord = append(ord, r)
@@ -127,18 +127,17 @@ func revisoresOrdenados(revisores map[int]*revista.Revisor) []*revista.Revisor{
 }
 
 func main() {
-	var edFileName, temFileName, pesFileName, artFileName, revFileName string
-	edFileName = *flag.String("e", "edicao.txt", "Nome do arquivo contendo os dados da edição")
-	temFileName = *flag.String("t", "temas.csv", "Nome do arquivo contendo os dados dos temas")
-	pesFileName = *flag.String("p", "pessoas.csv", "Nome do arquivo contendo os dados das pessoas")
-	artFileName = *flag.String("a", "artigos.csv", "Nome do arquivo contendo os dados dos artigos")
-	revFileName = *flag.String("r", "edicao.txt", "Nome do arquivo contendo os dados das revisões")
+	edFileName := *flag.String("e", "edicao.txt", "Nome do arquivo contendo os dados da edição")
+	temFileName := *flag.String("t", "temas.csv", "Nome do arquivo contendo os dados dos temas")
+	pesFileName := *flag.String("p", "pessoas.csv", "Nome do arquivo contendo os dados das pessoas")
+	artFileName := *flag.String("a", "artigos.csv", "Nome do arquivo contendo os dados dos artigos")
+	revFileName := *flag.String("r", "edicao.txt", "Nome do arquivo contendo os dados das revisões")
 	flag.Parse()
 	
-	var edicao *revista.Edicao
-	var temas map[int]string
-	var autores map[int]*revista.Autor
-	var revisores map[int]*revista.Revisor
+	var edicao revista.Edicao
+	temas := make(map[int]string)
+	autores := make(map[int]revista.Autor)
+	revisores := make(map[int]revista.Revisor)
 	
 	rawPesCSVData, _ := readCSVFile(pesFileName, 7)
 	
@@ -147,8 +146,10 @@ func main() {
 		senha, _ := strconv.ParseInt(strings.Trim(pessoa[3], " "), 10, 0)
 		if pessoa[6] == "A"{
 			autores[int(cod)] = revista.CriarAutor(pessoa[1], pessoa[2], int(senha), pessoa[4], pessoa[5])
+			
 		}else{
 			revisores[int(cod)] = revista.CriarRevisor(pessoa[1], pessoa[2], int(senha), pessoa[4], pessoa[5])
+			
 		}
 	}
 	
@@ -180,7 +181,7 @@ func main() {
 	numStr,_ := edReader.ReadString('\n')
 	dataStr,_ := edReader.ReadString('\n') 
 	data, _ := parseData(dataStr)
-	var revChefe *revista.Revisor
+	var revChefe revista.Revisor
 	for _, r := range revisores{
 		if r.GetNome() == chefe{
 			revChefe = r
@@ -233,14 +234,12 @@ func main() {
 		artigo.AdicionaRevisao(media, revisor)
 	}
 	
-	revisoresOrdenados := revisoresOrdenados(revisores)
+	revOrdenados := revisoresOrdenados(revisores)
 	
-	
-
 	//escreve as saidas em arquivos muito lindos
 	escreverArquivo("relat-resumo.txt", edicao.Resumo(revisores))
 	escreverArquivo("relat-revisoes.csv", edicao.RelatorioRevisoes())
-	escreverArquivo("relat-revisores.csv", relatorioRevisores(revisoresOrdenados))
+	escreverArquivo("relat-revisores.csv", relatorioRevisores(revOrdenados))
 
 	
 }
