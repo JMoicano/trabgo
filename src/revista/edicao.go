@@ -1,7 +1,6 @@
 package revista
 
 import(
-	"fmt"
 	"time"
 	"sort"
 	"bytes"

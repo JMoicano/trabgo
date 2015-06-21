@@ -1,6 +1,6 @@
-EngeSoft, num. 0, volume 0 - January de 1
+EngeSoft, num. 456, volume 123 - January de 1
 Tema: Ontologias em Engenharia de Software
-Editor-chefe: 
+Editor-chefe: Ricardo de Almeida Falbo
 
 
 Artigos submetidos: 13

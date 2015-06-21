@@ -182,11 +182,16 @@ func main() {
 	
 	edReader := bufio.NewReader(edFile)
 	tema ,_ := edReader.ReadString('\n')
+	fmt.Println(tema)
 	tema = strings.Trim(tema, "\n")
 	chefe,_ := edReader.ReadString('\n')
+	chefe = strings.Trim(chefe, "\n")
 	volStr,_ := edReader.ReadString('\n')
+	volStr = strings.Trim(volStr, "\n")
 	numStr,_ := edReader.ReadString('\n')
-	dataStr,_ := edReader.ReadString('\n') 
+	numStr = strings.Trim(numStr, "\n")
+	dataStr,_ := edReader.ReadString('\n')
+	dataStr = strings.Trim(dataStr, "\n")
 	data, _ := parseData(dataStr)
 	var revChefe revista.Revisor
 	for _, r := range revisores{
