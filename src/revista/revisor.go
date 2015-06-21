@@ -17,7 +17,7 @@ type Revisor struct {
 	notasAtribuidas float64
 }
 
-func (rev *Revisor) CriarRevisor(nome string, email string, senha int, instituicao string, endereco string) Revisor {
+func CriarRevisor(nome string, email string, senha int, instituicao string, endereco string) *Revisor {
 	return (Revisor{nome, email, senha, instituicao, endereco, nil, 0, 0.0})
 }
 

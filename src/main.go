@@ -9,7 +9,7 @@ import(
 	"./revista"
 )
 
-func readCSVFile(fileName string, fildNumber int)([][]string, err error){
+func readCSVFile(fileName string, fildNumber int)(rawData[][]string, err error){
 	file, err := os.Open(fileName)
 	if err != nil{
 		fmt.Println("Erro de I/O")
@@ -18,20 +18,20 @@ func readCSVFile(fileName string, fildNumber int)([][]string, err error){
 	
 	defer file.Close()
 	
-	feader := csv.NewReader(file)
+	reader := csv.NewReader(file)
 	
 	reader.Comma = ';'
 	reader.FieldsPerRecord = fildNumber
 	reader.TrimLeadingSpace = true
 	
-	rawData, err := reader.ReadAll()
+	rawData, err = reader.ReadAll()
 	
 	if err != nil{
 		fmt.Println(err)
 		return nil, err
 	}
 	
-	rawData = rawPesCSVData[1:]
+	rawData = rawData[1:]
 	return rawData, nil
 }
 
@@ -83,11 +83,10 @@ func main() {
 	revFileName = flag.String("r", "edicao.txt", "Nome do arquivo contendo os dados das revisões")
 	flag.Parse()
 	
-	var chefe string
 	var edicao Edicao
 	var temas map[int]string
-	var autores map[int]Autor
-	var revisores map[int]Revisor
+	var autores map[int]*Autor
+	var revisores map[int]*Revisor
 	
 	rawPesCSVData, _ := readCSVFile(pesFileName, 7)
 	
@@ -122,14 +121,58 @@ func main() {
 	
 	edReader := bufio.NewReader(edFile)
 	tema ,_ := edReader.ReadString('\n')
-	chefe,_ = edReader.ReadString('\n')
+	chefe,_ := edReader.ReadString('\n')
 	vol,_ = edReader.ReadString('\n')
 	num,_ = edReader.ReadString('\n')
 	dataStr,_ = edReader.ReadString('\n') 
 	data, _ := parseData(dataStr)
+	var revChefe *Revisor
+	for _, r := range revisores{
+		if r == chefe{
+			revChefe = r
+		}
+	}
+	edicao = CriarEdicao(num, vol, data, revChefe)
 	
-	fmt.Println(rawEdData)
+	rawArtCSVData, _ := readCSVFile(artFileName, 4)
 	
-
-	//fmt.Println(e)
+	for _,artigo := range rawArtCSVData{
+		autoresArtigo := strings.Split(artigo[2], ",")
+		var codContato int
+		if len(autoresArtigo) == 1 {
+			codContato = strconv.ParseInt(strings.Trim(autoresArtigo[0], " "), 10, 0)
+		}else{
+			codContato = strconv.ParseInt(strings.Trim(artigo[3], " "), 10, 0)
+		}
+		
+		contato := autores[int(codContato)]
+		
+		art := CriarArtigo(artigo[1], contato)
+		
+		for _, v := range autoresArtigo{
+			codAutor,_ := strconv.ParseInt(strings.Trim(v, " "), 10, 0)
+			art.AddAutor(autores[int(codAutor))
+		}
+		codArtigo, _ := strconv.ParseInt(strings.Trim(artigo[0], " "), 10, 0)
+		edicao.SubmeterArtigo(art, codArtigo)
+	}
+	
+	rawRevCSVData, _ := readCSVFile(revFileName, 5)
+	
+	for _, revisao := range rawRevCSVData{
+		cod := strconv.ParseInt(strings.Trim(revisao[0], " "), 10, 0)
+		artigo := edicao.GetArtigo(int(cod))
+		cod = strconv.ParseInt(strings.Trim(revisao[1], " "), 10, 0)
+		revisor := revisores[ind(cod)]
+		notas := artigo[2:]
+		var media float64
+		media = 0
+		for _, nota := range notas{
+			nota = strings.Trim(strings.Replace(nota, ",", ".", 1), " ")
+			media += strconv.ParseFloat(nota, 64)
+		}
+		media /= 3;
+		artigo.AdicionaRevisao(media, revisor)
+	}
+	
 }

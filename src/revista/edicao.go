@@ -12,12 +12,12 @@ type Edicao struct {
 	volume, numero int
 	dataPublicacao time.Time
 	tema string
-	chefe Revisor
+	chefe *Revisor
 	consistencia string
-	artigos map[int]Artigo
+	artigos map[int]*Artigo
 }
 
-func (ed *Edicao) CriarEdicao(numero int, volume int, data time.Time, r Revisor) Edicao {
+func CriarEdicao(numero int, volume int, data time.Time, r *Revisor) *Edicao {
 	return (Edicao{volume, numero, data, "", r, "", nil})
 }
 
@@ -30,22 +30,22 @@ func (ed *Edicao) SetTema(tema string){
 }
 
 
-func (ed *Edicao) SubmeterArtigo(a Artigo, cod int) {
+func (ed *Edicao) SubmeterArtigo(a *Artigo, cod int) {
 	ed.artigos[cod] = a
 }
 
-func (ed *Edicao) SetChefe(r Revisor) {
+func (ed *Edicao) SetChefe(r *Revisor) {
 	ed.chefe = r
 }
 
-func (ed Edicao) GetArtigo(cod int) Artigo{
+func (ed Edicao) GetArtigo(cod int) *Artigo{
 	return ed.artigos[cod]
 }
 
 //http://nerdyworm.com/blog/2013/05/15/sorting-a-slice-of-structs-in-go/
 func (ed *Edicao) RelatorioRevisoes() string {
 	var revisoes string
-	artigos := []Artigo{}
+	artigos := []*Artigo{}
 
 	for _, v := range ed.artigos {
 		artigos = append(artigos, v)
@@ -63,7 +63,7 @@ func (ed *Edicao) RelatorioRevisoes() string {
 
 }
 
-func (ed *Edicao) resumo(revisores map[int]Revisor) string {
+func (ed *Edicao) resumo(revisores map[int]*Revisor) string {
 	var buffer bytes.Buffer
 	var resumo string
 	var revisoresCapacitados int
