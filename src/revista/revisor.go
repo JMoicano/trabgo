@@ -1,6 +1,7 @@
 package revista
 
 import (
+	//"fmt"
 	"strings"
 	"strconv"
 	"bytes"
@@ -36,6 +37,7 @@ func (rev *Revisor) AddTema(tema string) {
 func (rev *Revisor) AdicionaRevisao(media float64) {
 	rev.notasAtribuidas = rev.notasAtribuidas + media
 	rev.artigosRevisados++
+	//fmt.Println(*rev)
 }
 
 func (rev Revisor) IsEnvolvido() bool {

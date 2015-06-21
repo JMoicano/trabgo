@@ -23,8 +23,8 @@ func (art *Artigo) AdicionaAutor(autor Autor){
 	art.listaAutores = append(art.listaAutores, autor)
 }
 
-func (art *Artigo) AdicionaRevisao(media float64, revisor Revisor){
-	art.listaRevisores = append(art.listaRevisores, revisor)
+func (art *Artigo) AdicionaRevisao(media float64, revisor *Revisor){
+	art.listaRevisores = append(art.listaRevisores, *revisor)
 	revisor.AdicionaRevisao(media)
 	art.media += media
 	art.revisoesEnviadas ++

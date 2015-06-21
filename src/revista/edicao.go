@@ -1,6 +1,7 @@
 package revista
 
 import(
+	"fmt"
 	"time"
 	"sort"
 	"bytes"
@@ -60,7 +61,7 @@ func (ed *Edicao) RelatorioRevisoes() string {
 
 }
 
-func (ed *Edicao) Resumo(revisores map[int]Revisor) string {
+func (ed *Edicao) Resumo(revisores []Revisor) string {
 	var buffer bytes.Buffer
 	var resumo string
 	var revisoresCapacitados int
@@ -86,9 +87,13 @@ func (ed *Edicao) Resumo(revisores map[int]Revisor) string {
 
 	for _, m := range revisores {
 		for _, t := range m.temas {
+			fmt.Println(t, "i")
+			fmt.Println(ed.tema, "i")
 			if(ed.tema == t){
 				revisoresCapacitados++
+				fmt.Println("bunda")
 				if(m.IsEnvolvido()){
+					fmt.Println("testa")
 					revisoresEnvolvidos++
 				}
 				break
@@ -96,6 +101,8 @@ func (ed *Edicao) Resumo(revisores map[int]Revisor) string {
 		}
 	}
 
+	fmt.Println(ed.tema)
+	
 	for _, i := range ed.artigos {
 		media = media + i.GetRevisoesEnviadas()
 	}
