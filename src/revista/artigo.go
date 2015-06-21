@@ -41,7 +41,7 @@ func (art Artigo) RelatorioRevisoes() string{
 	buffer.WriteString(art.contato.ToString())
 	buffer.WriteString(";")
 	buffer.WriteString(strconv.FormatFloat(art.media, 'f', 2, 64))
-
+	
 	for _, c := range art.listaRevisores {
 		buffer.WriteString(";")
 		buffer.WriteString(c.GetNome())

@@ -1,7 +1,7 @@
 package revista
 
 import(
-	"fmt"
+	//"fmt"
 	"time"
 	"sort"
 	"bytes"
@@ -13,11 +13,12 @@ type Edicao struct {
 	dataPublicacao time.Time
 	tema string
 	chefe Revisor
-	artigos map[int]Artigo
+	artigos []Artigo
+	codArtigos map[int]int
 }
 
 func CriarEdicao(numero int, volume int, data time.Time, r Revisor) Edicao{
-	return Edicao{volume, numero, data, "", r, make(map[int]Artigo)}
+	return Edicao{volume, numero, data, "", r, make([]Artigo, 0), make(map[int]int)}
 }
 
 func (ed Edicao) GetTema() string {
@@ -30,15 +31,16 @@ func (ed *Edicao) SetTema(tema string){
 
 
 func (ed *Edicao) SubmeterArtigo(a Artigo, cod int) {
-	ed.artigos[cod] = a
+	ed.codArtigos[cod] = len(ed.artigos)
+	ed.artigos = append(ed.artigos, a)
 }
 
 func (ed *Edicao) SetChefe(r Revisor) {
 	ed.chefe = r
 }
 
-func (ed Edicao) GetArtigo(cod int) Artigo{
-	return ed.artigos[cod]
+func (ed Edicao) GetArtigo(cod int) *Artigo{
+	return &ed.artigos[ed.codArtigos[cod]]
 }
 
 //http://nerdyworm.com/blog/2013/05/15/sorting-a-slice-of-structs-in-go/
@@ -87,21 +89,15 @@ func (ed *Edicao) Resumo(revisores []Revisor) string {
 
 	for _, m := range revisores {
 		for _, t := range m.temas {
-			fmt.Println(t, "i")
-			fmt.Println(ed.tema, "i")
 			if(ed.tema == t){
 				revisoresCapacitados++
-				fmt.Println("bunda")
 				if(m.IsEnvolvido()){
-					fmt.Println("testa")
 					revisoresEnvolvidos++
 				}
 				break
 			}
 		}
 	}
-
-	fmt.Println(ed.tema)
 	
 	for _, i := range ed.artigos {
 		media = media + i.GetRevisoesEnviadas()

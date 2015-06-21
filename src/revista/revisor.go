@@ -18,10 +18,6 @@ type Revisor struct {
 	notasAtribuidas float64
 }
 
-func (r Revisor)ArtigosRevisados() int{
-	return r.artigosRevisados
-}
-
 func CriarRevisor(nome string, email string, senha int, instituicao string, endereco string) Revisor{
 	return Revisor{nome, email, senha, instituicao, endereco, make([]string, 0), 0, 0.0}
 }
