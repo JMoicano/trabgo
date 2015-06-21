@@ -1,7 +1,7 @@
 package revista
 
 import(
-	//"fmt"
+	"fmt"
 	"time"
 	"sort"
 	"bytes"
@@ -48,6 +48,8 @@ func (ed *Edicao) RelatorioRevisoes() string {
 	var revisoes string
 	artigos := []Artigo{}
 
+	revisoes = "Artigo;Autor de contato;Média das avaliações;Revisor 1; Revisor 2; Revisor 3\n"
+
 	for _, v := range ed.artigos {
 		artigos = append(artigos, v)
 	}
@@ -70,9 +72,9 @@ func (ed *Edicao) Resumo(revisores []Revisor) string {
 	var revisoresEnvolvidos int
 	var media int
 
-	var dateOut string = ed.dataPublicacao.Format("ANSIC")
+	dateOut := ed.dataPublicacao.Month().String() + " de " + strconv.Itoa(ed.dataPublicacao.Year())
 
-	buffer.WriteString("EngeSort, num. ")
+	buffer.WriteString("EngeSoft, num. ")
 	buffer.WriteString(strconv.Itoa(ed.numero))
 	buffer.WriteString(", volume ")
 	buffer.WriteString(strconv.Itoa(ed.volume))
