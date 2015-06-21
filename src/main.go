@@ -6,6 +6,7 @@ import(
 	"encoding/csv"
 	"flag"
 	"time"
+    "io/ioutil"
 	"./revista"
 )
 
@@ -72,6 +73,41 @@ func parseData(dataStr string)(Time, error){
 	data = data + dataSplit[0]
 
 	return time.ParseInLocation(dataLayout, data, &localLoc)
+}
+
+//checa se variável de erro é diferente de nula, pra qualquer ocasião
+func check(e error) {
+    if e != nil {
+        panic(e)
+    }
+}
+
+func escreverArquivo(nomeArquivo, conteudo string) {
+	d1 := []byte(conteudo)
+    err := ioutil.WriteFile(nomeArquivo, d1, 0644)
+    check(err)
+}
+
+func relatorioRevisores(revisores map[int]*Revisor) string {
+	var retorno string
+
+	for _, c := range revisores {
+		retorno += c.RelatorioRevisor()
+		retorno += "\n"
+	}
+
+	return retorno
+}
+
+func relatorioRevisoes(revisoes map[int]*Artigo) string {
+	var retorno string
+
+	for _, c := range revisoes {
+		retorno += c.RelatorioRevisoes()
+		retorno += "\n"
+	}
+
+	return retorno
 }
 
 func main() {
@@ -174,5 +210,11 @@ func main() {
 		media /= 3;
 		artigo.AdicionaRevisao(media, revisor)
 	}
+
+	//escreve as saidas em arquivos muito lindos
+	escreverArquivo("relat-resumo.txt", edicao.resumo(revisores))
+	escreverArquivo("relat-revisoes.csv", relatorioRevisoes(edicao.artigos))
+	escreverArquivo("relat-revisores.csv", relatorioRevisores(revisores))
+
 	
 }

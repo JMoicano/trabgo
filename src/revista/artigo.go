@@ -1,5 +1,10 @@
 package revista
 
+import (
+	"bytes"
+	"strconv"
+)
+
 type Artigo struct{
 	titulo string
 	contato *Autor
@@ -34,6 +39,34 @@ func (art *Artigo) AdicionaRevisao(media float64, revisor *Revisor){
 	}
 }
 
+// string Artigo::relatorioRevisoes(){
+/
+// 	relatoriostream << titulo << ";" << contato.toString() << ";" << fixed << setprecision(2) << media;
+// 	string relatorio = relatoriostream.str();
+// 	for (Revisor i : listaRevisores) {
+// 		relatorio += ";" + i.toString();
+// 	}
+// 	return relatorio;
+// }
+
+func (art Artigo) relatorioRevisoes() {
+	var buffer bytes.Buffer
+	//TODO implementar sorting dos revisors
+	//sort.Sort(art.listaRevisores)
+	buffer.WriteString(art.titulo)
+	buffer.WriteString(";")
+	buffer.WriteString(art.contato.ToString())
+	buffer.WriteString(";")
+	buffer.WriteString(strconv.FormatFloat(art.media, 'f', 2, 64))
+
+	for _, c := range art.listaRevisores {
+		buffer.WriteString(";")
+		buffer.WriteString(c.GetNome())
+	}
+
+	return buffer.String()
+}
+
 func (art Artigo) GetRevisoesEnviadas() int{
 	return art.revisoesEnviadas
 }
@@ -46,16 +79,14 @@ func (art Artigo) GetTituloArtigo() string{
 	return art.titulo
 }
 
-type Artigos []Artigo
-
-func (art Artigos) Len() int {
+func (art Artigo) Len() int {
     return len(art)
 }
 
-func (art Artigos) Less(i, j int) bool {
+func (art Artigo) Less(i, j int) bool {
     return art[i].media < art[j].media;
 }
 
-func (art Artigos) Swap(i, j int) {
+func (art Artigo) Swap(i, j int) {
     art[i], art[j] = art[j], art[i]
 }

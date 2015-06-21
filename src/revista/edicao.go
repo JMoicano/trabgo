@@ -68,6 +68,7 @@ func (ed *Edicao) resumo(revisores map[int]*Revisor) string {
 	var resumo string
 	var revisoresCapacitados int
 	var revisoresEnvolvidos int
+	var media int
 
 	var dateOut string = ed.dataPublicacao.Format("ANSIC")
 
@@ -97,8 +98,6 @@ func (ed *Edicao) resumo(revisores map[int]*Revisor) string {
 			}
 		}
 	}
-
-	var media int
 
 	for _, i := range ed.artigos {
 		media = media + i.GetRevisoesEnviadas()
