@@ -39,16 +39,6 @@ func (art *Artigo) AdicionaRevisao(media float64, revisor *Revisor){
 	}
 }
 
-// string Artigo::relatorioRevisoes(){
-/
-// 	relatoriostream << titulo << ";" << contato.toString() << ";" << fixed << setprecision(2) << media;
-// 	string relatorio = relatoriostream.str();
-// 	for (Revisor i : listaRevisores) {
-// 		relatorio += ";" + i.toString();
-// 	}
-// 	return relatorio;
-// }
-
 func (art Artigo) relatorioRevisoes() {
 	var buffer bytes.Buffer
 	//TODO implementar sorting dos revisors
