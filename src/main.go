@@ -96,9 +96,13 @@ func escreverArquivo(nomeArquivo, conteudo string) {
 func relatorioRevisores(revisores []revista.Revisor) string {
 	var retorno string
 
+	retorno += "Revisor;Qtd. artigos revisados;Média das notas atribuídas\n"
+
 	for _, c := range revisores {
-		retorno += c.RelatorioRevisor()
-		retorno += "\n"
+		if(c.IsEnvolvido()){
+			retorno += c.RelatorioRevisor()
+			retorno += "\n"
+		}
 	}
 
 	return retorno
