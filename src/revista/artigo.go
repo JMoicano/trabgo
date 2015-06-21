@@ -1,6 +1,7 @@
 package revista
 
 import (
+	"sort"
 	"bytes"
 	"strconv"
 )
@@ -30,8 +31,7 @@ func (art *Artigo) AdicionaAutor(autor *Autor){
 
 func (art *Artigo) AdicionaRevisao(media float64, revisor *Revisor){
 	art.listaRevisores = append(art.listaRevisores, revisor)
-	//mudei isso, conferir
-	(*revisor) = AdicionaRevisao((*revisor), media)
+	revisor.AdicionaRevisao(media)
 	art.media += media
 	art.revisoesEnviadas ++
 	if art.revisoesEnviadas == 3{
@@ -39,10 +39,9 @@ func (art *Artigo) AdicionaRevisao(media float64, revisor *Revisor){
 	}
 }
 
-func (art Artigo) relatorioRevisoes() {
+func (art Artigo) RelatorioRevisoes() string{
 	var buffer bytes.Buffer
-	//TODO implementar sorting dos revisors
-	//sort.Sort(art.listaRevisores)
+	sort.Sort(ByName(art.listaRevisores))
 	buffer.WriteString(art.titulo)
 	buffer.WriteString(";")
 	buffer.WriteString(art.contato.ToString())
@@ -69,14 +68,8 @@ func (art Artigo) GetTituloArtigo() string{
 	return art.titulo
 }
 
-func (art Artigo) Len() int {
-    return len(art)
-}
+type ByMedia []*Artigo
 
-func (art Artigo) Less(i, j int) bool {
-    return art[i].media < art[j].media;
-}
-
-func (art Artigo) Swap(i, j int) {
-    art[i], art[j] = art[j], art[i]
-}
+func (art ByMedia) Len() int { return len(art) }
+func (art ByMedia) Less(i, j int) bool { if art[i].media == art[j].media { return art[i].titulo < art[j].titulo }else{ return art[i].media > art[j].media } }
+func (art ByMedia) Swap(i, j int) { art[i], art[j] = art[j], art[i] }

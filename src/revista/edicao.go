@@ -18,7 +18,7 @@ type Edicao struct {
 }
 
 func CriarEdicao(numero int, volume int, data time.Time, r *Revisor) *Edicao {
-	return (Edicao{volume, numero, data, "", r, "", nil})
+	return (&Edicao{volume, numero, data, "", r, "", nil})
 }
 
 func (ed Edicao) GetTema() string {
@@ -51,9 +51,8 @@ func (ed *Edicao) RelatorioRevisoes() string {
 		artigos = append(artigos, v)
 	}
 
-	//artigo tem que implementar metodos da interface sort
-	//mas da erro na hora de chamar isso aqui
-	sort.Reverse(artigos)
+
+	sort.Sort(ByMedia(artigos))
 
 	for _, j := range artigos {
 		revisoes = revisoes + j.RelatorioRevisoes() + "\n"
@@ -63,7 +62,7 @@ func (ed *Edicao) RelatorioRevisoes() string {
 
 }
 
-func (ed *Edicao) resumo(revisores map[int]*Revisor) string {
+func (ed *Edicao) Resumo(revisores map[int]*Revisor) string {
 	var buffer bytes.Buffer
 	var resumo string
 	var revisoresCapacitados int
