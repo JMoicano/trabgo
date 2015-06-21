@@ -5,6 +5,7 @@ import(
 	"sort"
 	"bytes"
 	"strconv"
+	"strings"
 )
 
 type Edicao struct {
@@ -64,14 +65,47 @@ func (ed *Edicao) RelatorioRevisoes() string {
 
 }
 
+func gerarData(dataPublicacao time.Time) string {
+	aux := dataPublicacao.Month().String()
+
+	switch aux {
+	case "January":
+		aux = "Janeiro"
+	case "February":
+		aux = "Fevereiro"
+	case "March":
+		aux = "Março"
+	case "April":
+		aux = "Abril"
+	case "May":
+		aux = "Maio"
+	case "June":
+		aux = "Junho"
+	case "July":
+		aux = "Julho"
+	case "August":
+		aux = "Agosto"
+	case "September":
+		aux = "Setembro"
+	case "October":
+		aux = "Outubro"
+	case "November":
+		aux = "Novembro"
+	case "December":
+		aux = "Dezembro"
+	}
+
+	return aux + " de " + strconv.Itoa(dataPublicacao.Year())
+}
+
 func (ed *Edicao) Resumo(revisores []Revisor) string {
 	var buffer bytes.Buffer
 	var resumo string
 	var revisoresCapacitados int
 	var revisoresEnvolvidos int
-	var media int
+	var media float64
 
-	dateOut := ed.dataPublicacao.Month().String() + " de " + strconv.Itoa(ed.dataPublicacao.Year())
+	dateOut := gerarData(ed.dataPublicacao)
 
 	buffer.WriteString("EngeSoft, num. ")
 	buffer.WriteString(strconv.Itoa(ed.numero))
@@ -101,10 +135,10 @@ func (ed *Edicao) Resumo(revisores []Revisor) string {
 	}
 	
 	for _, i := range ed.artigos {
-		media = media + i.GetRevisoesEnviadas()
+		media = media + float64(i.GetRevisoesEnviadas())
 	}
 
-	media /= revisoresEnvolvidos
+	media /= float64(revisoresEnvolvidos)
 
 	buffer.WriteString("\n")
 	buffer.WriteString("Artigos submetidos: ")
@@ -117,7 +151,7 @@ func (ed *Edicao) Resumo(revisores []Revisor) string {
 	buffer.WriteString(strconv.Itoa(revisoresEnvolvidos))
 	buffer.WriteString("\n")
 	buffer.WriteString("Media artigos/revisor: ")
-	buffer.WriteString(strconv.Itoa(media))
+	buffer.WriteString(strings.Replace(strconv.FormatFloat(media, 'f', 2, 64), ".", ",", -1))
 	buffer.WriteString("\n")
 
 	resumo = buffer.String()

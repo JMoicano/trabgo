@@ -1,4 +1,4 @@
-EngeSoft, num. 456, volume 123 - November de 2014
+EngeSoft, num. 456, volume 123 - Novembro de 2014
 Tema: Ontologias em Engenharia de Software
 Editor-chefe: Ricardo de Almeida Falbo
 
@@ -6,4 +6,4 @@ Editor-chefe: Ricardo de Almeida Falbo
 Artigos submetidos: 13
 Revisores Capacitados: 7
 Revisores Envolvidos: 6
-Media artigos/revisor: 6
+Media artigos/revisor: 6,50

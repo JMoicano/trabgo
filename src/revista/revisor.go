@@ -57,7 +57,7 @@ func (rev *Revisor) RelatorioRevisor() string {
 
 	//essa conversao recebe o float, o 'f' eu nao sei, o 2 é numero de casas depois 
 	//do ponto, e o ultimo arg é pra dizer se é float 32 ou float 64
-	media_string := strconv.FormatFloat(media, 'f', 2, 64)
+	media_string := strings.Replace(strconv.FormatFloat(media, 'f', 2, 64), ".", ",", -1)
 
 	buffer.WriteString(rev.nome)
 	buffer.WriteString(";")
