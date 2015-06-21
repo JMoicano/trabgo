@@ -5,7 +5,6 @@ import(
 	"sort"
 	"bytes"
 	"strconv"
-	"strings"
 )
 
 type Edicao struct {
@@ -87,7 +86,7 @@ func (ed *Edicao) Resumo(revisores map[int]Revisor) string {
 
 	for _, m := range revisores {
 		for _, t := range m.temas {
-			if(strings.EqualFold(ed.tema, t)){
+			if(ed.tema == t){
 				revisoresCapacitados++
 				if(m.IsEnvolvido()){
 					revisoresEnvolvidos++

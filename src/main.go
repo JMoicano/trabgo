@@ -161,7 +161,9 @@ func main() {
 		revHabilitados := strings.Split(tema[2], ",")
 		for _, v := range revHabilitados{
 			cod,_ := strconv.ParseInt(strings.Trim(v, " "), 10, 0)
-			revisores[int(cod)].AddTema(tema[1])
+			rAux := revisores[int(cod)]
+			rAux.AddTema(tema[1])
+			revisores[int(cod)] = rAux
 		}
 	}
 	
@@ -216,6 +218,8 @@ func main() {
 	}
 	
 	rawRevCSVData, _ := readCSVFile(revFileName, 5)
+	
+	
 	
 	for _, revisao := range rawRevCSVData{
 		cod, _ := strconv.ParseInt(strings.Trim(revisao[0], " "), 10, 0)
