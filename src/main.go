@@ -106,11 +106,11 @@ func relatorioRevisores(revisores []revista.Revisor) string {
 }
 
 func main() {
-	edFileName := *flag.String("e", "edicao.txt", "Nome do arquivo contendo os dados da edição")
-	temFileName := *flag.String("t", "temas.csv", "Nome do arquivo contendo os dados dos temas")
-	pesFileName := *flag.String("p", "pessoas.csv", "Nome do arquivo contendo os dados das pessoas")
-	artFileName := *flag.String("a", "artigos.csv", "Nome do arquivo contendo os dados dos artigos")
-	revFileName := *flag.String("r", "revisoes.csv", "Nome do arquivo contendo os dados das revisões")
+	edFileName := flag.String("e", "edicao.txt", "Nome do arquivo contendo os dados da edição")
+	temFileName := flag.String("t", "temas.csv", "Nome do arquivo contendo os dados dos temas")
+	pesFileName := flag.String("p", "pessoas.csv", "Nome do arquivo contendo os dados das pessoas")
+	artFileName := flag.String("a", "artigos.csv", "Nome do arquivo contendo os dados dos artigos")
+	revFileName := flag.String("r", "revisoes.csv", "Nome do arquivo contendo os dados das revisões")
 	flag.Parse()
 	
 	var edicao revista.Edicao
@@ -120,7 +120,7 @@ func main() {
 	revisores := make([]revista.Revisor, 0)
 	codRevisores := make(map[int]int)
 	
-	rawPesCSVData, _ := readCSVFile(pesFileName, 7)
+	rawPesCSVData, _ := readCSVFile(*pesFileName, 7)
 	
 	for _,pessoa := range rawPesCSVData{
 		cod, _ := strconv.ParseInt(strings.Trim(pessoa[0], " "), 10, 0)
@@ -134,7 +134,7 @@ func main() {
 		}
 	}
 	
-	rawTemCSVData, _ := readCSVFile(temFileName, 3)
+	rawTemCSVData, _ := readCSVFile(*temFileName, 3)
 	
 	for _,tema := range rawTemCSVData{
 		index,_ := strconv.ParseInt(tema[0], 10, 0)
@@ -146,7 +146,7 @@ func main() {
 		}
 	}
 	
-	edFile, err := os.Open(edFileName)
+	edFile, err := os.Open(*edFileName)
 	
 	if err != nil{
 		fmt.Println("Erro de I/O")
@@ -178,7 +178,7 @@ func main() {
 	edicao = revista.CriarEdicao(int(num), int(vol), data, revChefe)
 	edicao.SetTema(tema)
 	
-	rawArtCSVData, _ := readCSVFile(artFileName, 4)
+	rawArtCSVData, _ := readCSVFile(*artFileName, 4)
 	
 	for _,artigo := range rawArtCSVData{
 		autoresArtigo := strings.Split(artigo[2], ",")
@@ -201,7 +201,7 @@ func main() {
 		edicao.SubmeterArtigo(art, int(codArtigo))
 	}
 	
-	rawRevCSVData, _ := readCSVFile(revFileName, 5)
+	rawRevCSVData, _ := readCSVFile(*revFileName, 5)
 	
 	for _, revisao := range rawRevCSVData{
 		cod, _ := strconv.ParseInt(strings.Trim(revisao[0], " "), 10, 0)
